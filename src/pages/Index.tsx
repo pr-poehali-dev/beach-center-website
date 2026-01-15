@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -16,6 +17,14 @@ const Index = () => {
     date: '',
     message: ''
   });
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const scrollToSection = (id: string) => {
+    setMobileMenuOpen(false);
+    const element = document.querySelector(id);
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,9 +48,48 @@ const Index = () => {
             <a href="#gallery" className="hover:text-primary transition-colors">Галерея</a>
             <a href="#contacts" className="hover:text-primary transition-colors">Контакты</a>
           </div>
-          <Button className="bg-accent hover:bg-accent/90">
-            Забронировать
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button className="hidden md:block bg-accent hover:bg-accent/90" onClick={() => scrollToSection('#booking')}>
+              Забронировать
+            </Button>
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Icon name="Menu" size={24} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[280px]">
+                <div className="flex flex-col gap-6 mt-8">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Icon name="Waves" size={28} className="text-primary" />
+                    <h2 className="text-xl font-bold text-primary">ИЮЛЬ</h2>
+                  </div>
+                  <button onClick={() => scrollToSection('#home')} className="text-left text-lg hover:text-primary transition-colors py-2">
+                    Главная
+                  </button>
+                  <button onClick={() => scrollToSection('#services')} className="text-left text-lg hover:text-primary transition-colors py-2">
+                    Услуги
+                  </button>
+                  <button onClick={() => scrollToSection('#schedule')} className="text-left text-lg hover:text-primary transition-colors py-2">
+                    Расписание
+                  </button>
+                  <button onClick={() => scrollToSection('#prices')} className="text-left text-lg hover:text-primary transition-colors py-2">
+                    Цены
+                  </button>
+                  <button onClick={() => scrollToSection('#gallery')} className="text-left text-lg hover:text-primary transition-colors py-2">
+                    Галерея
+                  </button>
+                  <button onClick={() => scrollToSection('#contacts')} className="text-left text-lg hover:text-primary transition-colors py-2">
+                    Контакты
+                  </button>
+                  <Button className="bg-accent hover:bg-accent/90 w-full mt-4" onClick={() => scrollToSection('#booking')}>
+                    <Icon name="Calendar" className="mr-2" size={20} />
+                    Забронировать
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </nav>
       </header>
 
